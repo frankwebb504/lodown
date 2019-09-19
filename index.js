@@ -2,26 +2,6 @@
 
 // YOU KNOW WHAT TO DO //
 
-/**
- * each: Designed to loop over a collection, Array or Object, and applies the 
- * action Function to each value in the collection.
- * 
- * @param {Array or Object} collection: The collection over which to iterate.
- * @param {Function} action: The Function to be applied to each value in the 
- * collection
- */
-function each(collection, action) {
-    if(Array.isArray(collection)) {
-        for(var i = 0; i < collection.length; i++) {
-            action(collection[i], i, collection);
-        }
-    } else {
-        for (var key in collection) {
-            action(collection[key], key, collection);
-        }
-    }
-}
-module.exports.each = each;
 
 
 
@@ -73,7 +53,7 @@ module.exports.typeOf = typeOf;
  * 
  * @param {array} array: Array of items to pull from.
  * @param {number} number: How many items to return from the begining of array.
- * @return {array} array: Array of remaining values.
+ * @return {array} array: A new array of the number of values from the original array starting from the front of the array.
  * 
  */
 function first(array, number) {
@@ -95,7 +75,7 @@ module.exports.first = first;
  * If number is longer than array length, returns array
  * @param {array} array: Array of items to pull from.
  * @param {number} number: How many items to return from the end of array.
- * @return {array} array: Array of remaining values.
+ * @return {array} array: A new array of the number of values from the original array starting from the end of the array.
  * 
  */
 function last(array, number) {
@@ -204,7 +184,7 @@ module.exports.unique = unique;
  * filter: Designed to call a function on each element in an array and return a new array of all elements the function returned true for.
  * 
  * @param {array} array: Array of items to run function on.
- * @param {func} function: Function that returns true or false.
+ * @param {function} func: Function that returns true or false.
  * @return {array} array: Array made of all items from original array that returned true when function was called upon them.
  * 
  */
@@ -226,7 +206,7 @@ module.exports.filter = filter;
  * reject: Designed to call a function on each element in an array and return a new array of all elements the function returned false for.
  * 
  * @param {array} array: Array of items to run function on.
- * @param {func} function: Function that returns true or false.
+ * @param {function} func: Function that returns true or false.
  * @return {array} array: Array made of all items from original array that returned false when function was called upon them.
  * 
  */
@@ -243,7 +223,7 @@ return newArr2;
  * partition: Designed to call a function on each element in an array and return a new array of two arrays: one the function returned true for, and one it returned false for
  * 
  * @param {array} array: Array of items to run function on.
- * @param {func} function: Function that returns true or false.
+ * @param {function} func: Function that returns true or false.
  * @return {array} array: Array made of all items from original array seperated into two arrays, one for which the function returned true and one for which the function returned false
  * 
  */
@@ -267,8 +247,8 @@ module.exports.partition = partition;
 /**
  * map: Designed to call a function on each element in an array or object and return the results in an array
  * 
- * @param {collection} array or object: Array or object of items to run function on.
- * @param {func} function: Function to run on object or array
+ * @param {array or object} collection: Array or object of items to run function on.
+ * @param {function} func: Function to run on object or array
  * @return {array} array: Array made of all the returns from the function called on each item in array or object
  * 
  */
@@ -285,8 +265,8 @@ module.exports.map = map;
 
 /**
  * pluck: Designed to return an array of the property given from an array of objects
- * @param {array} array of objects: Array of objects we will search through for a property.
- * @param {property} string: property that we are looking for
+ * @param {array of objects} array: Array of objects we will search through for a property.
+ * @param {string} prop: property that we are looking for
  * @return {array} array: Array made of all the values we have from the property we searched for.
  * 
  */
@@ -301,8 +281,8 @@ module.exports.pluck = pluck;
 
 /**
  * every: Designed to return true if every element in collection passes test function, or false if any elements fail
- * @param {collection} array or objects: Array or objects we will test our function on
- * @param {funct} function: function that should evaluate to true or false
+ * @param {array or objects} collection: Array or objects we will test our function on
+ * @param {function} funct: function that should evaluate to true or false
  * @return {boolean} true or false: returns true if all elements pass, or false if any element returns false
  * 
  */
@@ -339,8 +319,8 @@ module.exports.every = every;
 
 /**
  * some: Designed to return true if one element in collection passes test function, or false if all elements fail
- * @param {collection} array or objects: Array or objects we will test our function on
- * @param {funct} function: function that should evaluate to true or false
+ * @param {array or objects} collection: Array or objects we will test our function on
+ * @param {function} funct: function that should evaluate to true or false
  * @return {boolean} true or false: returns true if one element passes, or false if all elements return false
  * 
  */
@@ -379,9 +359,10 @@ module.exports.some = some;
 /**
  * reduce: Designed to apply a function to an array starting with a seed. If no seed given, it starts with the first element of the array.
  * @param {array} array: Array we will run our function on
- * @param {funct} function: function that we will run on our array with the paramenters (seed or previous result, element, index)
- * @param {seed} number: number to start off our function with
- * @return {number} number: returns the final result after the function has been called on all elements
+ * @param {function} func: function that we will run on our array with the paramenters (seed or previous result, element, index)
+ * @param {any data type} seed: number to start off our function with
+ * @return {any data type} value: returns the final result after the function has been called on all elements, is the same data type as the original seed provided.
+ *          If no seed was provided, it is the same data type as the first element it the array passed as an argument.
  * 
  */
 function reduce(array, func, seed) {
@@ -399,9 +380,9 @@ module.exports.reduce = reduce;
 
 /**
  * extend: Designed to take an object, an any number of onjects afterwards and add properties on the first object from the others
- * @param {object} object: object we will add properties to.
- * @param {object} object: object we will take properties from to be added
- * @param {...theArgs} any number of more objects: as many more objects you want to pull properites from
+ * @param {object} obj1: object we will add properties to.
+ * @param {object} obj2: object we will take properties from to be added
+ * @param {infitite objects} ...theArgs: any number of more objects: as many more objects you want to pull properites from
  * @return {object} original object: first object in the arguments, with new properties added
  * 
  */
